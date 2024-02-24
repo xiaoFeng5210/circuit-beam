@@ -1,15 +1,20 @@
 import { useEffect, type FC } from 'react'
+
 const width = 700
 const height = 621
+const lineWidth = 5
+
+let gradient: CanvasGradient;
+
 let ctx: CanvasRenderingContext2D
 let canvas: HTMLCanvasElement
 
-const baseLinePath: {x: number, y: number}[] = []
+const baseLinePath: { x: number, y: number }[] = []
 
 const Lightning: FC = () => {
   const createCanvas = () => {
-    canvas = document.getElementById('canvas') as HTMLCanvasElement
-    ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+    canvas = document.getElementById('canvas') as HTMLCanvasElement;
+    ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   }
 
   const drawPartOne = () => {
@@ -36,17 +41,67 @@ const Lightning: FC = () => {
     ctx.stroke();
   }
 
+  const drawLightning = () => {
+    ctx.beginPath();
+    ctx.moveTo(baseLinePath[0].x, baseLinePath[0].y);
+    // ctx.strokeStyle = '#f0f0f0';
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = 'round';
+    // ctx.lineTo(baseLinePath[1].x, baseLinePath[1].y + 30);
+    // ctx.stroke()
+  }
+
+  const createStep = () => {
+    drawLightning();
+    const duration = 1000;
+    let startTime: any
+    let nextX: number, nextY: number;
+    const startX = baseLinePath[0].x
+    const startY = baseLinePath[0].y;
+    const endX = baseLinePath[baseLinePath.length - 1].x;
+    const endY = baseLinePath[baseLinePath.length - 1].y + 30;
+
+    const step = (currentTime: any) => {
+      !startTime && (startTime = currentTime);
+      // 已经过去的时间(ms)
+      const timeElapsed = currentTime - startTime;
+      // 动画执行的进度 {0,1}
+      const progress = Math.min(timeElapsed / duration, 1)
+
+      const draw = () => {
+        // 计算这一帧中线段应该到达的坐标点
+        nextX = startX + (endX - startX) * progress
+        nextY = startY + (endY - startY) * progress
+        
+
+      }
+
+    }
+
+
+
+
+
+  }
+
   const drawBaseLine = () => {
     ctx.beginPath()
     ctx.moveTo(width / 2, height - 1);
-    ctx.strokeStyle = '#292831';
-    ctx.lineWidth = 5;
     baseLinePath.push({ x: width / 2, y: height - 1 });
+    gradient = ctx.createLinearGradient(width / 2, height - 1, width, 0);
+    gradient.addColorStop(1, '#99B6FF');
+    gradient.addColorStop(0, '#E2F2FD');
+
+    ctx.strokeStyle = '#292831';
+    ctx.lineWidth = lineWidth;
+
     drawPartOne()
     drawPartTwo()
-    drawPartThree()
+    drawPartThree();
+    ctx.closePath();
   }
-  
+
   useEffect(() => {
     createCanvas();
     drawBaseLine();
