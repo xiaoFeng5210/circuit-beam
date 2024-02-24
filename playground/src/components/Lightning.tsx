@@ -55,34 +55,37 @@ const Lightning: FC = () => {
   const createStep = () => {
     drawLightning();
     const duration = 1000;
-    let startTime: any
+    let startTime: DOMHighResTimeStamp;
+
     let nextX: number, nextY: number;
     const startX = baseLinePath[0].x
     const startY = baseLinePath[0].y;
-    const endX = baseLinePath[baseLinePath.length - 1].x;
-    const endY = baseLinePath[baseLinePath.length - 1].y + 30;
+    const endX = baseLinePath[1].x;
+    const endY = baseLinePath[1].y;
 
-    const step = (currentTime: any) => {
+    const step = (currentTime: DOMHighResTimeStamp) => {
       !startTime && (startTime = currentTime);
-      // 已经过去的时间(ms)
-      const timeElapsed = currentTime - startTime;
       // 动画执行的进度 {0,1}
+      const timeElapsed = currentTime - startTime;
       const progress = Math.min(timeElapsed / duration, 1)
 
       const draw = () => {
         // 计算这一帧中线段应该到达的坐标点
         nextX = startX + (endX - startX) * progress
         nextY = startY + (endY - startY) * progress
-        
-
+        ctx.lineTo(nextX, nextY);
+        ctx.stroke();
       }
+      draw();
 
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        // startTime = 0;
+      }
     }
-
-
-
-
-
+    
+    requestAnimationFrame(step);
   }
 
   const drawBaseLine = () => {
@@ -105,6 +108,9 @@ const Lightning: FC = () => {
   useEffect(() => {
     createCanvas();
     drawBaseLine();
+    setTimeout(() => {
+      createStep();
+    }, 1000)
   }, [])
 
   return (
