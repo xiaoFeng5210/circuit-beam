@@ -92,9 +92,9 @@ const Lightning: FC = () => {
     ctx.beginPath()
     ctx.moveTo(width / 2, height - 1);
     baseLinePath.push({ x: width / 2, y: height - 1 });
-    gradient = ctx.createLinearGradient(width / 2, height - 1, width, 0);
-    gradient.addColorStop(1, '#99B6FF');
-    gradient.addColorStop(0, '#E2F2FD');
+    gradient = ctx.createLinearGradient(width / 2, height - 1, width, height / 4);
+    gradient.addColorStop(0.5, '#99B6FF');
+    gradient.addColorStop(1, '#E2F2FD');
 
     ctx.strokeStyle = '#292831';
     ctx.lineWidth = lineWidth;
