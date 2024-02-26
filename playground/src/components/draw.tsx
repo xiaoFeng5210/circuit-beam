@@ -1,6 +1,6 @@
 const width = 700
 const height = 621
-const lineWidth = 5
+const lineWidth = 4
 
 let ctx: CanvasRenderingContext2D
 let canvas: HTMLCanvasElement
@@ -98,8 +98,8 @@ function createGradient(x1: number, y1: number, x2: number, y2: number) {
   const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
   gradient.addColorStop(1, '#92B0F9');
   gradient.addColorStop(0.8, '#99B6FF');
-  gradient.addColorStop(0.7, '#8596BD');
-  gradient.addColorStop(0.57, '#899ECF');
+  gradient.addColorStop(0.7, '#899ECF');
+  gradient.addColorStop(0.57, '#8596BD');
   gradient.addColorStop(0.45, '#8292B5');
   gradient.addColorStop(0.4, '#79849F');
   gradient.addColorStop(0.25, '#686F81');
