@@ -50,13 +50,15 @@ export const createStep = () => {
   let startTime: DOMHighResTimeStamp;
 
   let nextX: number, nextY: number;
-  const startX = baseLinePath[0].x;
-  const startY = baseLinePath[0].y;
-  const endX = baseLinePath[1].x;
-  const endY = baseLinePath[1].y;
+  // 需要一个计数器, 第一次到达第一个拐点
+  let pathNode = 1;
 
-  const step = (currentTime: DOMHighResTimeStamp) => {
+  const flowBeam = (currentTime: DOMHighResTimeStamp) => {
+    const startX = baseLinePath[pathNode - 1].x;
+    const startY = baseLinePath[pathNode - 1].y;
     !startTime && (startTime = currentTime);
+    const endX = baseLinePath[pathNode].x;
+    const endY = baseLinePath[pathNode].y;
     // 动画执行的进度 {0,1}
     const timeElapsed = currentTime - startTime;
     const progress = Math.min(timeElapsed / duration, 1)
@@ -71,15 +73,20 @@ export const createStep = () => {
       ctx.stroke();
     }
     draw();
-
     if (progress < 1) {
-      requestAnimationFrame(step);
+      requestAnimationFrame(flowBeam);
     } else {
-      // startTime = 0;
+      startTime = 0;
+      if (pathNode <= baseLinePath.length - 1) {
+        pathNode++;
+        requestAnimationFrame(flowBeam);
+      } else {
+        ctx.closePath();
+      }
+      
     }
   }
-  
-  requestAnimationFrame(step);
+  requestAnimationFrame(flowBeam);
 }
 
 export const drawBaseLine = () => {
