@@ -2,8 +2,6 @@ const width = 700
 const height = 621
 const lineWidth = 5
 
-let gradient: CanvasGradient;
-
 let ctx: CanvasRenderingContext2D
 let canvas: HTMLCanvasElement
 
@@ -42,11 +40,8 @@ const drawLightning = () => {
   ctx.beginPath();
   ctx.moveTo(baseLinePath[0].x, baseLinePath[0].y);
   // ctx.strokeStyle = '#f0f0f0';
-  ctx.strokeStyle = gradient;
   ctx.lineWidth = lineWidth;
   ctx.lineCap = 'round';
-  // ctx.lineTo(baseLinePath[1].x, baseLinePath[1].y + 30);
-  // ctx.stroke()
 }
 
 export const createStep = () => {
@@ -55,7 +50,7 @@ export const createStep = () => {
   let startTime: DOMHighResTimeStamp;
 
   let nextX: number, nextY: number;
-  const startX = baseLinePath[0].x
+  const startX = baseLinePath[0].x;
   const startY = baseLinePath[0].y;
   const endX = baseLinePath[1].x;
   const endY = baseLinePath[1].y;
@@ -70,6 +65,8 @@ export const createStep = () => {
       // 计算这一帧中线段应该到达的坐标点
       nextX = startX + (endX - startX) * progress
       nextY = startY + (endY - startY) * progress
+      const gradient = createGradient(startX, startY, nextX, nextY);
+      ctx.strokeStyle = gradient;
       ctx.lineTo(nextX, nextY);
       ctx.stroke();
     }
@@ -91,16 +88,21 @@ export const drawBaseLine = () => {
   baseLinePath.push({ x: width / 2, y: height - 1 });
   ctx.strokeStyle = '#292831';
   ctx.lineWidth = lineWidth;
-
   drawPartOne()
   drawPartTwo()
   drawPartThree();
   ctx.closePath();
 }
 
-function createGradient() {
-  const gradient = ctx.createLinearGradient(width / 2, height - 1, width, height / 4);
-  gradient.addColorStop(0.5, '#99B6FF');
-  gradient.addColorStop(1, '#E2F2FD');
+function createGradient(x1: number, y1: number, x2: number, y2: number) {
+  const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+  gradient.addColorStop(1, '#92B0F9');
+  gradient.addColorStop(0.8, '#99B6FF');
+  gradient.addColorStop(0.7, '#8596BD');
+  gradient.addColorStop(0.57, '#899ECF');
+  gradient.addColorStop(0.45, '#8292B5');
+  gradient.addColorStop(0.4, '#79849F');
+  gradient.addColorStop(0.25, '#686F81');
+  gradient.addColorStop(0, '#36373C');
   return gradient;
 }
