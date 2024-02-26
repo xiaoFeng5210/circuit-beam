@@ -5,50 +5,29 @@ const lineWidth = 4
 let ctx: CanvasRenderingContext2D
 let canvas: HTMLCanvasElement
 
-const baseLinePath: { x: number, y: number }[] = []
+const baseLinePath: { x: number, y: number }[] = [
+  { x: width / 2, y: height - 1 },
+  { x: width / 2, y: height - 201 },
+  { x: width / 2 + 70, y: height - 201 - 70 },
+  { x: width / 2 + 70, y: height - 201 - 170 },
+]
 
 export const createCanvas = () => {
   canvas = document.getElementById('canvas') as HTMLCanvasElement;
   ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 }
 
-const drawPartOne = () => {
-  ctx.lineTo(width / 2, height - 200);
-  baseLinePath.push({ x: width / 2, y: height - 200 });
-  ctx.stroke();
-}
-
-const drawPartTwo = () => {
-  const delta = 70
-  const targetX = width / 2 + delta;
-  const targetY = height - 201 - delta;
-  baseLinePath.push({ x: targetX, y: targetY });
-  ctx.lineTo(targetX, targetY);
-  ctx.stroke();
-}
-
-const drawPartThree = () => {
-  const currentPoint = baseLinePath[baseLinePath.length - 1];
-  const targetX = currentPoint.x;
-  const targetY = currentPoint.y - 100;
-  baseLinePath.push({ x: targetX, y: targetY });
-  ctx.lineTo(targetX, targetY);
-  ctx.stroke();
-}
-
-const drawLightning = () => {
+const startDrawLightning = () => {
   ctx.beginPath();
   ctx.moveTo(baseLinePath[0].x, baseLinePath[0].y);
-  // ctx.strokeStyle = '#f0f0f0';
   ctx.lineWidth = lineWidth;
   ctx.lineCap = 'round';
 }
 
-export const createStep = () => {
-  drawLightning();
+export const createFlowBeam = () => {
+  startDrawLightning();
   const duration = 1000;
   let startTime: DOMHighResTimeStamp;
-
   let nextX: number, nextY: number;
   // 需要一个计数器, 第一次到达第一个拐点
   let pathNode = 1;
@@ -83,7 +62,6 @@ export const createStep = () => {
       } else {
         ctx.closePath();
       }
-      
     }
   }
   requestAnimationFrame(flowBeam);
@@ -92,12 +70,12 @@ export const createStep = () => {
 export const drawBaseLine = () => {
   ctx.beginPath()
   ctx.moveTo(width / 2, height - 1);
-  baseLinePath.push({ x: width / 2, y: height - 1 });
   ctx.strokeStyle = '#292831';
   ctx.lineWidth = lineWidth;
-  drawPartOne()
-  drawPartTwo()
-  drawPartThree();
+  baseLinePath.forEach((point) => {
+    ctx.lineTo(point.x, point.y);
+  })
+  ctx.stroke();
   ctx.closePath();
 }
 

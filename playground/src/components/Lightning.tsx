@@ -1,12 +1,12 @@
 import { useEffect, type FC } from 'react'
-import { createCanvas, createStep, drawBaseLine } from './draw';
+import { createCanvas, createFlowBeam, drawBaseLine } from './draw';
 
 const Lightning: FC = () => {
   useEffect(() => {
     createCanvas();
     drawBaseLine();
     setTimeout(() => {
-      createStep();
+      createFlowBeam();
     }, 1000)
   }, [])
 
