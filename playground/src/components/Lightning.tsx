@@ -1,5 +1,8 @@
 import { useEffect, type FC } from 'react'
-import { createCanvas, createFlowBeam, drawBaseLine } from './draw';
+import { createCanvas, flowBeamComposable, baseLineComposable } from './draw';
+
+const createFlowBeam = flowBeamComposable();
+const drawBaseLine = baseLineComposable();
 
 const Lightning: FC = () => {
   useEffect(() => {
