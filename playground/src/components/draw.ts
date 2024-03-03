@@ -43,7 +43,8 @@ export function flowBeamComposable() {
     draw(progress);
     if (progress < 1) {
       requestAnimationFrame(flowBeam);
-    } else finishCurrentStage();
+    }
+    else finishCurrentStage();
   }
 
   function finishCurrentStage() {

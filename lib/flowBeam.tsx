@@ -1,6 +1,8 @@
 import BaseLine from './baseLine';
 import { type CircuitBeamTypes } from './types';
-
+interface Config {
+  speed?: number
+}
 class FlowBeam extends BaseLine {
 
   duration = 1000;
@@ -9,12 +11,20 @@ class FlowBeam extends BaseLine {
   nextY: number = 0;
   pathNode = 1;
 
+  config: Config = {}
+
   mainBind = this.main.bind(this);
 
   constructor(
+    config?: Config,
     baseLinePoints?: CircuitBeamTypes['BASE_POINTS'],
-    canvasId?: string) {
+    canvasId?: string,
+    ) {
     super(baseLinePoints, canvasId);
+    if (config) {
+     this.config.speed = config.speed;
+    }
+    console.log(this.config.speed)
     this.startDrawLightning();;
     requestAnimationFrame(this.mainBind);
   }
@@ -22,7 +32,7 @@ class FlowBeam extends BaseLine {
   main(currentTime: DOMHighResTimeStamp) {
     !this.startTime && (this.startTime = currentTime);
     // 动画执行的进度 {0,1}
-    const timeElapsed = currentTime - this.startTime;
+    const timeElapsed = currentTime - this.startTime + (this.config.speed ?? 0);
     const progress = Math.min(timeElapsed / this.duration, 1)
     this.draw(progress);
     if (progress < 1) {
