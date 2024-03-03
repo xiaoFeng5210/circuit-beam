@@ -1,12 +1,9 @@
 import { useEffect, type FC } from 'react'
-import CircuitBeamBaseLine from '../../../lib/baseLine';
+import FlowBeam from '../../../lib/flowBeam';
 
 const Lightning: FC = () => {
   useEffect(() => {
-    setTimeout(() => {
-      const obj = new CircuitBeamBaseLine();
-      console.log(obj.BASE_POINTS)
-    }, 1000)
+      new FlowBeam()
   }, [])
 
   return (
