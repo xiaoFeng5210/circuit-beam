@@ -1,15 +1,10 @@
 import { useEffect, type FC } from 'react'
-import { createCanvas, flowBeamComposable, baseLineComposable } from './draw';
-
-const createFlowBeam = flowBeamComposable();
-const drawBaseLine = baseLineComposable();
+import CircuitBeamBaseLine from '../../../lib/baseLine';
 
 const Lightning: FC = () => {
   useEffect(() => {
-    createCanvas();
-    drawBaseLine();
     setTimeout(() => {
-      createFlowBeam();
+      new CircuitBeamBaseLine();
     }, 1000)
   }, [])
 
