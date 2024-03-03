@@ -1,5 +1,3 @@
-import CircuitBeamBaseLine from './baseLine'
-
 export function createBasePoints(target: any, propertyKey: any) {
   target[propertyKey] = ([
     { x: target.width / 2, y: target.height - 1 },
