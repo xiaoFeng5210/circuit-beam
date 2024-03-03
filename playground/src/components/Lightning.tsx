@@ -4,7 +4,8 @@ import CircuitBeamBaseLine from '../../../lib/baseLine';
 const Lightning: FC = () => {
   useEffect(() => {
     setTimeout(() => {
-      new CircuitBeamBaseLine();
+      const obj = new CircuitBeamBaseLine();
+      console.log(obj.BASE_POINTS)
     }, 1000)
   }, [])
 

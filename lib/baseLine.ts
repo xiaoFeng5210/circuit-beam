@@ -1,10 +1,9 @@
-import { createBasePoints } from './decorators'
 import { type CircuitBeamTypes } from './types'
 import BaseLayer from './baseLayer';
+import {createBaseLinePoints} from './decorators'
 
 class CircuitBeamBaseLine extends BaseLayer implements CircuitBeamTypes {
   
-  @createBasePoints
   BASE_POINTS: CircuitBeamTypes['BASE_POINTS'] = []
 
   constructor(
@@ -17,8 +16,9 @@ class CircuitBeamBaseLine extends BaseLayer implements CircuitBeamTypes {
     if (Array.isArray(baseLinePoints) && baseLinePoints.length > 0) {
       this.BASE_POINTS = baseLinePoints;
     }
-
-    console.log('CircuitBeamBaseLine', this.BASE_POINTS)
+    else {
+      this.BASE_POINTS = createBaseLinePoints(this);
+    }
 
     this.drawBaseLine();
   }
@@ -26,7 +26,7 @@ class CircuitBeamBaseLine extends BaseLayer implements CircuitBeamTypes {
   drawBaseLine() {
    this.ctx.beginPath()
    this.ctx.moveTo(this.width / 2, this.height - 1);
-   this.BASE_POINTS.forEach((point) => {
+   this.BASE_POINTS?.forEach((point) => {
       this.ctx.lineTo(point.x, point.y);
     })
     this.ctx.stroke();
