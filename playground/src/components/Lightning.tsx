@@ -3,7 +3,7 @@ import FlowBeam from '../../../lib/flowBeam';
 
 const Lightning: FC = () => {
   useEffect(() => {
-      new FlowBeam()
+      new FlowBeam({startTime: 2000})
   }, [])
 
   return (

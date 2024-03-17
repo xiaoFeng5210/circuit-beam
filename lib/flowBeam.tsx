@@ -1,7 +1,8 @@
 import BaseLine from './baseLine';
 import { type CircuitBeamTypes } from './types';
 interface Config {
-  speed?: number
+  speed?: number,
+  startTime?: number, // 电流动画开始时间
 }
 class FlowBeam extends BaseLine {
 
@@ -14,19 +15,27 @@ class FlowBeam extends BaseLine {
   config: Config = {}
 
   mainBind = this.main.bind(this);
-
+  
   constructor(
     config?: Config,
     baseLinePoints?: CircuitBeamTypes['BASE_POINTS'],
     canvasId?: string,
     ) {
     super(baseLinePoints, canvasId);
-    if (config) {
-     this.config.speed = config.speed;
-    }
-    console.log(this.config.speed)
-    this.startDrawLightning();;
-    requestAnimationFrame(this.mainBind);
+    this.setConfig(config);
+    this.startDrawLightning();
+    this.programStart();
+  }
+  
+  public programStart() {
+    this.saveCanvas();
+    if (this.config.startTime === 0) {
+      requestAnimationFrame(this.mainBind);
+    } else {
+      setTimeout(() => {
+        requestAnimationFrame(this.mainBind);
+      }, this.config.startTime);
+    } 
   }
 
   main(currentTime: DOMHighResTimeStamp) {
@@ -59,21 +68,41 @@ class FlowBeam extends BaseLine {
       requestAnimationFrame(this.mainBind);
     } else {
       this.ctx.closePath();
+      this.restoreCanvas();
+      this.restart();
     }
+  }
+  
+  restart() {
+    this.drawBaseLine();
+    this.pathNode = 1;
+    this.startDrawLightning();
+    this.programStart();
   }
 
   createLightningStartAndEnd() {
     const startX = this.BASE_POINTS[this.pathNode - 1].x;
     const startY = this.BASE_POINTS[this.pathNode - 1].y;
-    const endX = this.BASE_POINTS[this.pathNode].x;
-    const endY = this.BASE_POINTS[this.pathNode].y;
-    return { startX, startY, endX, endY };
+    if (this.pathNode === this.BASE_POINTS.length) {
+      return { startX, startY, endX: startX, endY: startY };
+    } else {
+      const endX = this.BASE_POINTS[this.pathNode]?.x;
+      const endY = this.BASE_POINTS[this.pathNode]?.y;
+      return { startX, startY, endX, endY }; 
+    }
   }
 
   startDrawLightning() {
     this.ctx.beginPath();
     this.ctx.moveTo(this.BASE_POINTS[0].x, this.BASE_POINTS[0].y);
     this.ctx.lineCap = 'round';
+  }
+  
+  setConfig(config?: Config) {
+    if (config) {
+      this.config.speed = config.speed;
+      this.config.startTime = config.startTime ?? 0;
+    }
   }
 }
 

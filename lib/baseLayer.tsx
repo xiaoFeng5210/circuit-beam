@@ -13,9 +13,21 @@ class BaseLayer {
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.createBasePen();
   }
+  
+  restoreCanvas() {
+    this.ctx.restore();
+  }
+  
+  saveCanvas() {
+    this.ctx.save();
+  }
 
   createBasePen() {
     this.ctx.lineWidth = this.lineWidth;
+  }
+  
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
   }
   createGradient(x1: number, y1: number, x2: number, y2: number) {
     this.gradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
