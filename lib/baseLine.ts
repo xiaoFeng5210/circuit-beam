@@ -25,7 +25,7 @@ class CircuitBeamBaseLine extends BaseLayer implements CircuitBeamTypes {
 
   drawBaseLine() {
    this.ctx.beginPath()
-   this.ctx.moveTo(this.width / 2, this.height - 1);
+   this.ctx.moveTo(this.width / 2, this.height - 5);
    this.BASE_POINTS?.forEach((point) => {
       this.ctx.lineTo(point.x, point.y);
     })
